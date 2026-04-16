@@ -54,7 +54,7 @@ app.get('/info', (request, response) => {
       )
       response.send(infoText)
     })
-    .catch((error) => next(error))
+    // .catch((error) => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
@@ -64,10 +64,10 @@ app.get('/api/persons', (request, response) => {
     console.log("persons", persons)
     response.json(persons)
     })
-    .catch((error) => next(error))
+    // .catch((error) => next(error))
 })
 
-app.get('/api/persons/:id', (request, response) => {
+app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id).then(person => {
     console.log("person", person);
     
@@ -81,7 +81,7 @@ const generateId = () => {
     return String(newId)
 }
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
   const body = request.body
   console.log("body", body);
   console.log("body.content", body.content);
