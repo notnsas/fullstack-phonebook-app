@@ -102,7 +102,8 @@ app.post('/api/persons', (request, response, next) => {
 app.put('/api/persons/:id', (request, response, next) => {
   console.log("Running put")
   const { name, number } = request.body
-
+  const opts = { runValidators: true }
+  
   Person.findById(request.params.id)
     .then((person) => {
       if (!person) {
@@ -112,11 +113,15 @@ app.put('/api/persons/:id', (request, response, next) => {
       person.name = name
       person.number = number
 
-      return person.save().then((updatedPerson) => {
+      return person.save(opts).then((updatedPerson) => {
         response.json(updatedPerson)
       })
     })
-    .catch((error) => next(error))
+    .catch((error) => {
+      console.log("Validator ke run buat update");
+      
+      next(error)
+    })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
