@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
-const dns = require("node:dns/promises")
+const dns = require('node:dns/promises')
 
-dns.setServers(["1.1.1.1"]);
+dns.setServers(['1.1.1.1'])
 mongoose.set('strictQuery', false)
 
 const url = process.env.MONGODB_URI
 
 console.log('connecting to', url)
 mongoose.connect(url, { family: 4 })
-  .then(result => {
+  .then(() => {
     console.log('connected to MongoDB')
   })
   .catch(error => {
@@ -21,22 +21,11 @@ const personSchema = new mongoose.Schema({
     minlength: 3,
     required: true,
   },
-  // number : {
-  //   type: String,
-  //   validate: {
-  //     validator: function(v) {
-  //       return /\d{2}-\d{6}/.test(v);
-  //     },
-  //     message: props => `${props.value} is not a valid phone number!`
-  //   },
-  //   minlength: 8,
-  //   required: true,
-  // },
   number: {
     type: String,
     validate: {
       validator: function(v) {
-        return /^\d{2,3}-\d+$/.test(v);
+        return /^\d{2,3}-\d+$/.test(v)
       },
       message: props => `${props.value} is not a valid phone number!`
     },

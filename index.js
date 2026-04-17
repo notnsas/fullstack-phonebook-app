@@ -9,7 +9,7 @@ morgan.token('body', req => {
 })
 
 // let persons = []
-console.log("TEST");
+console.log('TEST')
 
 const requestLogger = (request, response, next) => {
   console.log('Method:', request.method)
@@ -20,8 +20,8 @@ const requestLogger = (request, response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
-  console.log("Start to log error");
-  
+  console.log('Start to log error')
+
   console.error(error.message)
 
   if (error.name === 'CastError') {
@@ -40,70 +40,65 @@ app.use(morgan(':url :status :res[content-length] :response-time ms :body'))
 // app.use(unknownEndpoint) test
 
 app.get('/', (request, response) => {
-    response.send('<h1>Hello World!</h1>')
+  response.send('<h1>Hello World!</h1>')
 })
 
 app.get('/info', (request, response) => {
-    const nowDate = new Date()
-    Person.find({}).then(persons => {
-      console.log("persons", persons.length)
-      const infoText = (`
-          <p>Phonebook has info for ${persons.length} people<p/> 
-          <p>${nowDate}<p/>
-          `
-      )
-      response.send(infoText)
-    })
-    // .catch((error) => next(error))
+  const nowDate = new Date()
+  Person.find({}).then(persons => {
+    console.log('persons', persons.length)
+    const infoText = (`
+        <p>Phonebook has info for ${persons.length} people<p/> 
+        <p>${nowDate}<p/>
+        `
+    )
+    response.send(infoText)
+  })
+  // .catch((error) => next(error))
 })
 
 app.get('/api/persons', (request, response) => {
-    console.log("test");
+  console.log('test')
 
-    Person.find({}).then(persons => {
-    console.log("persons", persons)
+  Person.find({}).then(persons => {
+    console.log('persons', persons)
     response.json(persons)
-    })
-    // .catch((error) => next(error))
+  })
+  // .catch((error) => next(error))
 })
 
 app.get('/api/persons/:id', (request, response, next) => {
   Person.findById(request.params.id).then(person => {
-    console.log("person", person);
-    
+    console.log('person', person)
+
     response.json(person)
   })
-  .catch((error) => next(error))
+    .catch((error) => next(error))
 })
-
-const generateId = () => {
-    const newId = Math.floor(Math.random() * 100000000000000)
-    return String(newId)
-}
 
 app.post('/api/persons', (request, response, next) => {
   const body = request.body
-  console.log("body", body);
-  console.log("body.content", body.content);
-  console.log("Start to make person", body);
+  console.log('body', body)
+  console.log('body.content', body.content)
+  console.log('Start to make person', body)
 
   const person = new Person({
     name: body.name,
     number: body.number,
   })
-  console.log("person", person);
+  console.log('person', person)
 
   person.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  .catch((error) => next(error))
+    .catch((error) => next(error))
 })
 
 app.put('/api/persons/:id', (request, response, next) => {
-  console.log("Running put")
+  console.log('Running put')
   const { name, number } = request.body
   const opts = { runValidators: true }
-  
+
   Person.findById(request.params.id)
     .then((person) => {
       if (!person) {
@@ -118,15 +113,15 @@ app.put('/api/persons/:id', (request, response, next) => {
       })
     })
     .catch((error) => {
-      console.log("Validator ke run buat update");
-      
+      console.log('Validator ke run buat update')
+
       next(error)
     })
 })
 
 app.delete('/api/persons/:id', (request, response, next) => {
   Person.findByIdAndDelete(request.params.id)
-    .then((result) => {
+    .then(() => {
       response.status(204).end()
     })
     .catch((error) => next(error))

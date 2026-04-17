@@ -1,14 +1,14 @@
 const mongoose = require('mongoose')
-const dns = require("node:dns/promises")
+const dns = require('node:dns/promises')
 
-dns.setServers(["1.1.1.1"]);
+dns.setServers(['1.1.1.1'])
 
 if (process.argv.length < 3) {
   console.log('give password as argument')
   process.exit(1)
 }
 
-console.log(dns.getServers());
+console.log(dns.getServers())
 
 const password = encodeURIComponent(process.argv[2])
 const name = process.argv[3]
@@ -32,7 +32,7 @@ const person = new Person({
   number: number,
 })
 
-person.save().then(result => {
+person.save().then(() => {
   console.log(`added ${name} number ${number} to phonebook`)
   mongoose.connection.close()
 })
